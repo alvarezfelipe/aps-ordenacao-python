@@ -3,13 +3,37 @@
 #Imports
 import random
 import time
+import urllib.request
+import shutil
 
 listaDeDados = []
+listaDePalavras = []
 
 #Gerando números aleatórios e salvando na lista
-def criaLista(qtde):    
+def criaLista(qtde): 
+    # Laço de repetição na quantidade informada pelo usuário
+    # A geração dos números é feita pela função RANDINT(MÍN, MÁX)  
     for i in range(qtde):
         listaDeDados.append(random.randint(0 , 1000000))
+    print(f'A lista gerada aleatoriamente foi \n {listaDeDados} \n')
+
+#Gerando lista de palavras aleatórias
+def listaPalavras(qtde):
+    # Utilização da URLLIB para leitura de dados
+    # Base de dados com mais de 247mil palavras em PT-BR conhecidas
+    site = 'https://www.ime.usp.br/~pf/dicios/br-sem-acentos.txt' 
+    response = urllib.request.urlopen(site)
+    texto = response.read().decode()
+    palavras = texto.splitlines()    
+
+    # Laço de repetição na quantidade informada pelo usuário
+    # A função CHOICE seleciona palavras aleatórias dentro de uma lista
+    for i in range(qtde):    
+        listaDePalavras.append(random.choice(palavras))
+    
+    # Laço utilizado para colocar todas as palavras da lista em LETRAS MAIÚSCULAS
+    for palavra in listaDePalavras:
+        listaDeDados.append(palavra.upper())
     print(f'A lista gerada aleatoriamente foi \n {listaDeDados} \n')
 
 #Apagando a lista
@@ -119,6 +143,7 @@ def verificaQuick(lista):
     fechaTempo = time.time()
     total = (fechaTempo - abreTempo)
     print(f'Tempo total para ordenação no método Quick: {total} segundos.')
+    separador()
 
 def verificaBubble(lista):
     novaLista = lista.copy()
@@ -127,6 +152,7 @@ def verificaBubble(lista):
     fechaTempo = time.time()
     total = (fechaTempo - abreTempo)
     print(f'Tempo total para ordenação no método Bubble: {total} segundos.')
+    separador()
 
 def verificaMerge(lista):
     novaLista = lista.copy()
@@ -135,6 +161,7 @@ def verificaMerge(lista):
     fechaTempo = time.time()
     total = (fechaTempo - abreTempo)
     print(f'Tempo total para ordenação no método Merge: {total} segundos.')
+    separador()
 
 def verificaInsertion(lista):
     novaLista = lista.copy()
@@ -143,10 +170,9 @@ def verificaInsertion(lista):
     fechaTempo = time.time()
     total = (fechaTempo - abreTempo)
     print(f'Tempo total para ordenação no método Insertion: {total} segundos.')
+    separador()
 
-
-criaLista(300)
-verificaQuick(listaDeDados)
-verificaBubble(listaDeDados)
-verificaMerge(listaDeDados)
-verificaInsertion(listaDeDados)
+def separador():
+    tamanho_terminal = shutil.get_terminal_size((180, 20))
+    colunas = tamanho_terminal.columns    
+    print('-' * colunas)
